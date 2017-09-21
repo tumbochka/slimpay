@@ -23,24 +23,39 @@ class SlimpayGatewayFactory extends GatewayFactory
             'payum.factory_title' => 'slimpay',
             'payum.action.capture' => new CaptureAction(),
             'payum.action.authorize' => new AuthorizeAction(),
-            'payum.action.refund' => new RefundAction(),
             'payum.action.cancel' => new CancelAction(),
             'payum.action.notify' => new NotifyAction(),
             'payum.action.status' => new StatusAction(),
-            'payum.action.convert_payment' => new ConvertPaymentAction(),
         ]);
 
         if (false == $config['payum.api']) {
-            $config['payum.default_options'] = array(
+            $config['payum.default_options'] = [
+                'app_id' => '',
+                'app_secret' => '',
+                'creditor_reference' => '',
+                'return_url' => '',
+                'notify_url' => '',
                 'sandbox' => true,
-            );
+            ];
             $config->defaults($config['payum.default_options']);
             $config['payum.required_options'] = [];
 
             $config['payum.api'] = function (ArrayObject $config) {
                 $config->validateNotEmpty($config['payum.required_options']);
 
-                return new Api((array) $config, $config['payum.http_client'], $config['httplug.message_factory']);
+                $slimpayConfig = new Config();
+
+                $slimpayConfig->appId = $config['app_id'];
+                $slimpayConfig->appSecret = $config['app_secret'];
+                $slimpayConfig->creditorReference = $config['creditor_reference'];
+                $slimpayConfig->returnUrl = $config['return_url'];
+                $slimpayConfig->notifyUrl = $config['notify_url'];
+                $slimpayConfig->baseUri = $config['sandbox'] ?
+                    Constants::BASE_URI_SANDBOX :
+                    Constants::BASE_URI_PROD
+                ;
+
+                return $slimpayConfig;
             };
         }
     }
