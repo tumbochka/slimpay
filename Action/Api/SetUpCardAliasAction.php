@@ -2,20 +2,21 @@
 
 namespace Payum\Slimpay\Action\Api;
 
+
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Slimpay\Constants;
 use Payum\Slimpay\Request\Api\CheckoutIframe;
 use Payum\Slimpay\Request\Api\CheckoutRedirect;
-use Payum\Slimpay\Request\Api\SignMandate;
+use Payum\Slimpay\Request\Api\SetUpCardAlias;
 
-class SignMandateAction extends BaseApiAwareAction
+class SetUpCardAliasAction extends BaseApiAwareAction
 {
     /**
      * {@inheritDoc}
      *
-     * @param SignMandate $request
+     * @param SetUpCardAlias $request
      */
     public function execute($request)
     {
@@ -27,35 +28,13 @@ class SignMandateAction extends BaseApiAwareAction
             throw new LogicException('Payment Schema not set or not supported');
         }
 
-        if (Constants::PAYMENT_SCHEMA_CARD == $model['payment_schema']) {
-            throw new LogicException('Mandate signing is not available for Card schema');
+        if (Constants::PAYMENT_SCHEMA_CARD != $model['payment_schema']) {
+            throw new LogicException('Setting up card alias is available for Card schema only');
         }
 
-        $model->validateNotEmpty([
-            'subscriber_reference',
-            'first_name',
-            'last_name',
-            'address1',
-            'city',
-            'zip',
-            'country'
-        ]);
+        $model->validateNotEmpty(['subscriber_reference']);
 
-        $model['order'] = $this->api->signMandate($model['subscriber_reference'], $model['payment_schema'], [
-            'givenName' => $model['first_name'],
-            'familyName' => $model['last_name'],
-            'email' => $model['email'],
-            'telephone' => $model['phone'],
-            'companyName' => $model['company'],
-            'organizationName' => $model['organization'],
-            'billingAddress' => [
-                'street1' => $model['address1'],
-                'street2' => $model['address2'],
-                'city' => $model['city'],
-                'postalCode' => $model['zip'],
-                'country' => $model['country']
-            ]
-        ]);
+        $model['order'] = $this->api->setUpCardAlias($model['subscriber_reference']);
 
         if(Constants::CHECKOUT_MODE_REDIRECT == $model['checkout_mode']) {
             $this->gateway->execute(new CheckoutRedirect($model));
@@ -72,7 +51,7 @@ class SignMandateAction extends BaseApiAwareAction
      */
     public function supports($request)
     {
-        return $request instanceof SignMandate &&
+        return $request instanceof SetUpCardAlias &&
             $request->getModel() instanceof \ArrayAccess;
     }
 }

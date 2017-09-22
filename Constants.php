@@ -23,6 +23,8 @@ class Constants
     const FOLLOW_CREATE_ORDERS = 'create-orders';
     const FOLLOW_CREATE_PAYINS = 'create-payins';
     const FOLLOW_CREATE_PAYOUTS = 'create-payouts';
+    const FOLLOW_USER_APPROVAL = 'user-approval';
+    const FOLLOW_EXTENDED_USER_APPROVAL = 'extended-user-approval';
 
     const ITEM_TYPE_SIGN_MANDATE = 'signMandate';
     const ITEM_TYPE_MANDATE = 'mandate';
@@ -32,6 +34,10 @@ class Constants
     const ITEM_ACTION_SIGN = 'sign';
     const ITEM_ACTION_AMEND_BANK_ACCOUNT = 'amendBankAccount';
     const ITEM_ACTION_CREATE = 'create';
+
+    const CHECKOUT_MODE_REDIRECT = 'redirect';
+    const CHECKOUT_MODE_IFRAME_POPIN = 'iframepopin';
+    const CHECKOUT_MODE_IFRAME_EMBADDED = 'iframeembedded';
 
     /**
      * @return array

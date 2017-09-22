@@ -13,6 +13,11 @@ abstract class BaseApiAwareAction implements ActionInterface, GatewayAwareInterf
     use GatewayAwareTrait;
     use ApiAwareTrait;
 
+    /**
+     * @var Api
+     */
+    protected $api;
+
     public function __construct()
     {
         $this->apiClass = Api::class;

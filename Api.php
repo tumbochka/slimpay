@@ -1,13 +1,14 @@
 <?php
 namespace Payum\Slimpay;
 
+use HapiClient\Hal\Resource;
 use HapiClient\Http\Follow;
 use HapiClient\Http\JsonBody;
 use Http\Message\MessageFactory;
 use Payum\Core\HttpClientInterface;
-use \HapiClient\Http\HapiClient;
-use \HapiClient\Http\Auth\Oauth2BasicAuthentication;
-use \HapiClient\Hal\CustomRel;
+use HapiClient\Http\HapiClient;
+use HapiClient\Http\Auth\Oauth2BasicAuthentication;
+use HapiClient\Hal\CustomRel;
 
 class Api
 {
@@ -189,19 +190,49 @@ class Api
     }
 
     /**
+     * @param Resource $order
+     * @param string $iframeMode
+     *
+     * @return string
+     */
+    public function getCheckoutIframe(Resource $order, $iframeMode)
+    {
+        $resource = $this->doRequest(
+            'GET',
+            Constants::FOLLOW_EXTENDED_USER_APPROVAL,
+            ['mode' => $iframeMode],
+            $order
+        );
+
+        $html = $resource->getState()['content'];
+
+        return base64_decode($html);
+    }
+
+    /**
+     * @param Resource $order
+     *
+     * @return string
+     */
+    public function getCheckoutRedirect(Resource $order)
+    {
+        return $order->getLink($this->getRelationsNamespace() . Constants::FOLLOW_USER_APPROVAL)->getHref();
+    }
+
+    /**
      * @param string $method
      * @param string $follow
      * @param array $fields
      *
      * @return Resource
      */
-    protected function doRequest($method, $follow, array $fields)
+    protected function doRequest($method, $follow, array $fields, Resource $resource = null)
     {
         $rel = new CustomRel($this->getRelationsNamespace() . $follow);
 
         $follow = new Follow($rel, $method, null, new JsonBody($fields));
 
-        return $this->hapiClient->sendFollow($follow);
+        return $this->hapiClient->sendFollow($follow, $resource);
     }
 
     /**
