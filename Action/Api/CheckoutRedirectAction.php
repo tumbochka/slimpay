@@ -9,6 +9,7 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Reply\HttpRedirect;
 use Payum\Slimpay\Constants;
 use Payum\Slimpay\Request\Api\CheckoutRedirect;
+use Payum\Slimpay\Util\ResourceSerializer;
 
 class CheckoutRedirectAction extends BaseApiAwareAction
 {
@@ -23,16 +24,17 @@ class CheckoutRedirectAction extends BaseApiAwareAction
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        $model->validateNotEmpty(['order', 'checkout_mode']);
-        if (!$model['order'] instanceof Resource) {
+        $order = ResourceSerializer::unserializeResource($model['order']);
+        if (! $order instanceof Resource) {
             throw new LogicException('Order should be an instance of Resource');
         }
         if (Constants::CHECKOUT_MODE_REDIRECT != $model['checkout_mode']) {
             throw new LogicException(sprintf('Redirect is not available for mode %s', $model['checkout_mode']));
         }
 
-        throw new HttpRedirect($this->api->getCheckoutRedirect($model['order']));
+        throw new HttpRedirect($this->api->getCheckoutRedirect($order));
     }
+
     /**
      * {@inheritDoc}
      */

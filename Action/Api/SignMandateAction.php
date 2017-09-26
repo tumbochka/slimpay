@@ -9,6 +9,7 @@ use Payum\Slimpay\Constants;
 use Payum\Slimpay\Request\Api\CheckoutIframe;
 use Payum\Slimpay\Request\Api\CheckoutRedirect;
 use Payum\Slimpay\Request\Api\SignMandate;
+use Payum\Slimpay\Util\ResourceSerializer;
 
 class SignMandateAction extends BaseApiAwareAction
 {
@@ -41,21 +42,23 @@ class SignMandateAction extends BaseApiAwareAction
             'country'
         ]);
 
-        $model['order'] = $this->api->signMandate($model['subscriber_reference'], $model['payment_schema'], [
-            'givenName' => $model['first_name'],
-            'familyName' => $model['last_name'],
-            'email' => $model['email'],
-            'telephone' => $model['phone'],
-            'companyName' => $model['company'],
-            'organizationName' => $model['organization'],
-            'billingAddress' => [
-                'street1' => $model['address1'],
-                'street2' => $model['address2'],
-                'city' => $model['city'],
-                'postalCode' => $model['zip'],
-                'country' => $model['country']
-            ]
-        ]);
+        $model['order'] = ResourceSerializer::serializeResource(
+            $this->api->signMandate($model['subscriber_reference'], $model['payment_schema'], [
+                'givenName' => $model['first_name'],
+                'familyName' => $model['last_name'],
+                'email' => $model['email'],
+                'telephone' => $model['phone'],
+                'companyName' => $model['company'],
+                'organizationName' => $model['organization'],
+                'billingAddress' => [
+                    'street1' => $model['address1'],
+                    'street2' => $model['address2'],
+                    'city' => $model['city'],
+                    'postalCode' => $model['zip'],
+                    'country' => $model['country']
+                ]
+            ])
+        );
 
         if(Constants::CHECKOUT_MODE_REDIRECT == $model['checkout_mode']) {
             $this->gateway->execute(new CheckoutRedirect($model));

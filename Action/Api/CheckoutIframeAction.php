@@ -10,6 +10,7 @@ use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\RenderTemplate;
 use Payum\Slimpay\Constants;
 use Payum\Slimpay\Request\Api\CheckoutIframe;
+use Payum\Slimpay\Util\ResourceSerializer;
 
 class CheckoutIframeAction extends BaseApiAwareAction
 {
@@ -39,7 +40,8 @@ class CheckoutIframeAction extends BaseApiAwareAction
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
         $model->validateNotEmpty(['order', 'checkout_mode']);
-        if (!$model['order'] instanceof Resource) {
+        $order = ResourceSerializer::unserializeResource($model['order']);
+        if (! $order instanceof Resource) {
             throw new LogicException('Order should be an instance of Resource');
         }
         if (!in_array(
@@ -49,7 +51,7 @@ class CheckoutIframeAction extends BaseApiAwareAction
             throw new LogicException(sprintf('Iframe is not available for mode %s', $model['checkout_mode']));
         }
 
-        $iframe = $this->api->getCheckoutIframe($model['order'], $model['checkout_mode']);
+        $iframe = $this->api->getCheckoutIframe($order, $model['checkout_mode']);
 
         $renderTemplate = new RenderTemplate($this->templateName, array(
             'snippet' => $iframe,

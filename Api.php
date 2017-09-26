@@ -96,7 +96,7 @@ class Api
      *
      * @return Resource
      */
-    public function updatePaymentMethod($subscriberReference, $mandateReference)
+    public function updatePaymentMethodWithCheckout($subscriberReference, $mandateReference)
     {
         $fields = [
             'started' => true,
@@ -119,6 +119,24 @@ class Api
         ];
 
         return $this->doRequest('POST', Constants::FOLLOW_CREATE_ORDERS, $fields);
+    }
+
+    /**
+     * @param string $mandateReference
+     * @param string $iban
+     *
+     * @return Resource
+     */
+    public function updatePaymentMethodWithIban($mandateReference, $iban)
+    {
+        $mandate = $this->doRequest('GET', Constants::FOLLOW_GET_MANDATES, [
+            'creditorReference' => $this->options['creditor_reference'],
+            'reference' => $mandateReference
+        ]);
+
+        return $this->doRequest('POST', Constants::FOLLOW_UPDATE_BANK_ACCOUNT, [
+            'iban' => $iban
+        ], $mandate);
     }
 
     /**
@@ -175,18 +193,26 @@ class Api
 
     /**
      * @param string $paymentScheme
-     * @param string $paymentReference
+     * @param string $mandateReference
      * @param array $fields
      *
      * @return Resource
      */
-    public function refundPayment($paymentScheme, $paymentReference, array $fields)
+    public function refundPayment($paymentScheme, $mandateReference, array $fields)
     {
         $fields['creditor'] = ['reference' => $this->options['creditor_reference']];
-        $fields['mandate'] = ['reference' => $paymentReference];
+        $fields['mandate'] = ['reference' => $mandateReference];
         $fields['scheme'] = $paymentScheme;
 
         return $this->doRequest('POST', Constants::FOLLOW_CREATE_PAYOUTS, $fields);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultCheckoutMode()
+    {
+        return $this->options['default_checkout_mode'];
     }
 
     /**
@@ -220,17 +246,28 @@ class Api
     }
 
     /**
-     * @param string $method
-     * @param string $follow
-     * @param array $fields
+     * @param Resource $order
      *
      * @return Resource
      */
-    protected function doRequest($method, $follow, array $fields, Resource $resource = null)
+    public function getOrderMandate(Resource $order)
+    {
+        return $this->doRequest('GET', Constants::FOLLOW_GET_MANDATE, null, $order);
+    }
+
+    /**
+     * @param string $method
+     * @param string $follow
+     * @param array|null $fields
+     * @param Resource|null $resource
+     *
+     * @return Resource
+     */
+    protected function doRequest($method, $follow, array $fields = null, Resource $resource = null)
     {
         $rel = new CustomRel($this->getRelationsNamespace() . $follow);
 
-        $follow = new Follow($rel, $method, null, new JsonBody($fields));
+        $follow = new Follow($rel, $method, null, $fields ? new JsonBody($fields) : null);
 
         return $this->hapiClient->sendFollow($follow, $resource);
     }

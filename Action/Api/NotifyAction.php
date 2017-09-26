@@ -1,21 +1,21 @@
 <?php
-namespace Payum\Slimpay\Action;
 
-use Payum\Core\Action\ActionInterface;
+namespace Payum\Slimpay\Action\Api;
+
+
+use HapiClient\Hal\Resource;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\GatewayAwareTrait;
-use Payum\Core\Request\Refund;
-use Payum\Slimpay\Request\Api\Refund as ApiRefund;
+use Payum\Slimpay\Constants;
+use Payum\Slimpay\Request\Api\Notify;
+use Payum\Slimpay\Util\ResourceSerializer;
 
-class RefundAction implements ActionInterface
+class NotifyAction extends BaseApiAwareAction
 {
-    use GatewayAwareTrait;
-
     /**
      * {@inheritDoc}
      *
-     * @param Refund $request
+     * @param Notify $request
      */
     public function execute($request)
     {
@@ -23,9 +23,11 @@ class RefundAction implements ActionInterface
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        $this->gateway->execute(new ApiRefund($model));
+        $model->validateNotEmpty(['order']);
 
+        $order = ResourceSerializer::unserializeResource($model['order']);
 
+        $model['state'] = $order->getState()['state'];
     }
 
     /**
@@ -34,8 +36,8 @@ class RefundAction implements ActionInterface
     public function supports($request)
     {
         return
-            $request instanceof Refund &&
+            $request instanceof Notify &&
             $request->getModel() instanceof \ArrayAccess
-        ;
+            ;
     }
 }
