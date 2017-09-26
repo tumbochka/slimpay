@@ -3,10 +3,8 @@
 namespace Payum\Slimpay\Action\Api;
 
 
-use HapiClient\Hal\Resource;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Slimpay\Constants;
 use Payum\Slimpay\Request\Api\Notify;
 use Payum\Slimpay\Util\ResourceSerializer;
 

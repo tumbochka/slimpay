@@ -6,6 +6,7 @@ use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Slimpay\Request\Api\Payment;
 
 class CaptureAction implements ActionInterface
 {
@@ -22,7 +23,9 @@ class CaptureAction implements ActionInterface
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        throw new \LogicException('Not implemented');
+        $model->validateNotEmpty(['amount', 'currency', 'scheme', 'payment_reference']);
+
+        $this->gateway->execute(new Payment($model));
     }
 
     /**

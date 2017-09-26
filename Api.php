@@ -167,13 +167,12 @@ class Api
     }
 
     /**
-     * @param string $paymentReference
      * @param string $paymentSchema
+     * @param string $paymentReference
      * @param array $fields
-     *
      * @return Resource
      */
-    public function createPayment($paymentReference, $paymentSchema, array $fields)
+    public function createPayment($paymentSchema, $paymentReference, array $fields)
     {
         $fields['creditor'] = ['reference' => $this->options['creditor_reference']];
 
@@ -192,17 +191,17 @@ class Api
 
 
     /**
-     * @param string $paymentScheme
+     * @param string $paymentSchema
      * @param string $mandateReference
      * @param array $fields
      *
      * @return Resource
      */
-    public function refundPayment($paymentScheme, $mandateReference, array $fields)
+    public function refundPayment($paymentSchema, $mandateReference, array $fields)
     {
         $fields['creditor'] = ['reference' => $this->options['creditor_reference']];
         $fields['mandate'] = ['reference' => $mandateReference];
-        $fields['scheme'] = $paymentScheme;
+        $fields['scheme'] = $paymentSchema;
 
         return $this->doRequest('POST', Constants::FOLLOW_CREATE_PAYOUTS, $fields);
     }

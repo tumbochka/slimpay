@@ -7,6 +7,9 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Authorize;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Slimpay\Constants;
+use Payum\Slimpay\Request\Api\SetUpCardAlias;
+use Payum\Slimpay\Request\Api\SignMandate;
 
 class AuthorizeAction implements ActionInterface, GatewayAwareInterface
 {
@@ -23,7 +26,13 @@ class AuthorizeAction implements ActionInterface, GatewayAwareInterface
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        throw new \LogicException('Not implemented');
+        $model->validateNotEmpty(['payment_schema']);
+
+        if(Constants::PAYMENT_SCHEMA_CARD == $model['payment_schema']) {
+            $this->gateway->execute(new SetUpCardAlias($model));
+        } else {
+            $this->gateway->execute(new SignMandate($model));
+        }
     }
 
     /**
