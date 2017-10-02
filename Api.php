@@ -207,6 +207,26 @@ class Api
     }
 
     /**
+     * @param $paymentId
+     *
+     * @return Resource
+     */
+    public function getPayment($paymentId)
+    {
+        return $this->doRequest('GET', Constants::FOLLOW_SEARCH_PAYMENT_BY_ID, ['id' => $paymentId]);
+    }
+
+    /**
+     * @param Resource $order
+     *
+     * @return Resource
+     */
+    public function getOrderMandate(Resource $order)
+    {
+        return $this->doRequest('GET', Constants::FOLLOW_GET_MANDATE, null, $order);
+    }
+
+    /**
      * @return string
      */
     public function getDefaultCheckoutMode()
@@ -242,16 +262,6 @@ class Api
     public function getCheckoutRedirect(Resource $order)
     {
         return $order->getLink($this->getRelationsNamespace() . Constants::FOLLOW_USER_APPROVAL)->getHref();
-    }
-
-    /**
-     * @param Resource $order
-     *
-     * @return Resource
-     */
-    public function getOrderMandate(Resource $order)
-    {
-        return $this->doRequest('GET', Constants::FOLLOW_GET_MANDATE, null, $order);
     }
 
     /**

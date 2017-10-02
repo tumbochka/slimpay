@@ -33,6 +33,7 @@ class Constants
     const FOLLOW_GET_MANDATES = 'get-mandates';
     const FOLLOW_GET_MANDATE = 'get-mandates';
     const FOLLOW_UPDATE_BANK_ACCOUNT = 'update-bank-account';
+    const FOLLOW_SEARCH_PAYMENT_BY_ID = 'search-payment-by-id';
 
     const ITEM_TYPE_SIGN_MANDATE = 'signMandate';
     const ITEM_TYPE_MANDATE = 'mandate';

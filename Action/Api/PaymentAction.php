@@ -43,6 +43,6 @@ class PaymentAction  extends BaseApiAwareAction
         return
             $request instanceof Payment &&
             $request->getModel() instanceof \ArrayAccess
-            ;
+        ;
     }
 }

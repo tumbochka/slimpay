@@ -28,6 +28,7 @@ class ConvertPaymentAction implements ActionInterface
         $details['amount'] = $payment->getTotalAmount();
         $details['currency'] = $payment->getCurrencyCode();
         $details['label'] = $payment->getDescription();
+        $details['subscriber_reference'] = $payment->getClientId();
 
         $request->setResult((array) $details);
     }
