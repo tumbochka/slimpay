@@ -23,7 +23,7 @@ class CaptureAction implements ActionInterface
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        $model->validateNotEmpty(['amount', 'currency', 'scheme', 'payment_reference']);
+        $model->validateNotEmpty(['amount', 'currency', 'payment_schema', 'payment_reference']);
 
         $this->gateway->execute(new Payment($model));
     }
