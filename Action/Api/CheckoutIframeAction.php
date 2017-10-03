@@ -15,20 +15,6 @@ use Payum\Slimpay\Util\ResourceSerializer;
 class CheckoutIframeAction extends BaseApiAwareAction
 {
     /**
-     * @var string
-     */
-    protected $templateName;
-
-    /**
-     * @param string|null $templateName
-     */
-    public function __construct($templateName)
-    {
-        $this->templateName = $templateName;
-        parent::__construct();
-    }
-
-    /**
      * {@inheritDoc}
      *
      * @param CheckoutIframe $request
@@ -39,7 +25,7 @@ class CheckoutIframeAction extends BaseApiAwareAction
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        $model->validateNotEmpty(['order', 'checkout_mode']);
+        $model->validateNotEmpty(['order', 'checkout_mode', 'authorize_template']);
         $order = ResourceSerializer::unserializeResource($model['order']);
         if (! $order instanceof Resource) {
             throw new LogicException('Order should be an instance of Resource');
@@ -53,7 +39,7 @@ class CheckoutIframeAction extends BaseApiAwareAction
 
         $iframe = $this->api->getCheckoutIframe($order, $model['checkout_mode']);
 
-        $renderTemplate = new RenderTemplate($this->templateName, array(
+        $renderTemplate = new RenderTemplate($model['authorize_template'], array(
             'snippet' => $iframe,
         ));
         $this->gateway->execute($renderTemplate);

@@ -16,6 +16,20 @@ class AuthorizeAction implements ActionInterface, GatewayAwareInterface
     use GatewayAwareTrait;
 
     /**
+     * @var string
+     */
+    protected $templateName;
+
+    /**
+     * @param string|null $templateName
+     */
+    public function __construct($templateName)
+    {
+        $this->templateName = $templateName;
+    }
+
+
+    /**
      * {@inheritDoc}
      *
      * @param Authorize $request
@@ -27,6 +41,8 @@ class AuthorizeAction implements ActionInterface, GatewayAwareInterface
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
         $model->validateNotEmpty(['payment_schema']);
+
+        $model['authorize_template'] = $this->templateName;
 
         if(Constants::PAYMENT_SCHEMA_CARD == $model['payment_schema']) {
             $this->gateway->execute(new SetUpCardAlias($model));

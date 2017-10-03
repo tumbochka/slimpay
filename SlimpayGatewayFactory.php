@@ -19,10 +19,13 @@ class SlimpayGatewayFactory extends GatewayFactory
     protected function populateConfig(ArrayObject $config)
     {
         $config->defaults([
+            'payum.template.authorize' => '@PayumSlimpay/Action/capture.html.twig'
+        ]);
+        $config->defaults([
             'payum.factory_name' => 'slimpay',
             'payum.factory_title' => 'slimpay',
             'payum.action.capture' => new CaptureAction(),
-            'payum.action.authorize' => new AuthorizeAction(),
+            'payum.action.authorize' => new AuthorizeAction($config['payum.template.authorize']),
             'payum.action.cancel' => new CancelAction(),
             'payum.action.notify' => new NotifyAction(),
             'payum.action.status' => new PaymentStatusAction(),
