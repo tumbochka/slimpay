@@ -217,6 +217,16 @@ class Api
     }
 
     /**
+     * @param $orderId
+     *
+     * @return Resource
+     */
+    public function getOrder($orderId)
+    {
+        return $this->doRequest('GET', Constants::FOLLOW_SEARCH_ORDER_BY_ID, ['id' => $orderId]);
+    }
+
+    /**
      * @param Resource $order
      *
      * @return Resource

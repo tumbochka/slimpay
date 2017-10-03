@@ -3,22 +3,20 @@ namespace Payum\Slimpay\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\GatewayAwareTrait;
-use Payum\Core\Request\GetStatusInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Slimpay\Action\Api\SyncPaymentAction;
 use Payum\Slimpay\Constants;
-use Payum\Slimpay\Request\Api\Payment;
+use Payum\Slimpay\Request\Api\GetPaymentHumanStatus;
 use Payum\Slimpay\Request\Api\SyncPayment;
 
-class StatusAction implements ActionInterface
+class PaymentStatusAction implements ActionInterface
 {
     use GatewayAwareTrait;
 
     /**
      * {@inheritDoc}
      *
-     * @param GetStatusInterface $request
+     * @param GetPaymentHumanStatus $request
      */
     public function execute($request)
     {
@@ -52,7 +50,7 @@ class StatusAction implements ActionInterface
     public function supports($request)
     {
         return
-            $request instanceof GetStatusInterface &&
+            $request instanceof GetPaymentHumanStatus &&
             $request->getModel() instanceof \ArrayAccess
         ;
     }

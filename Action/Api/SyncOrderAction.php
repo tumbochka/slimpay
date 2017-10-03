@@ -2,19 +2,17 @@
 
 namespace Payum\Slimpay\Action\Api;
 
-
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Slimpay\Request\Api\GetOrderHumanStatus;
-use Payum\Slimpay\Request\Api\Notify;
+use Payum\Slimpay\Request\Api\SyncOrder;
 use Payum\Slimpay\Util\ResourceSerializer;
 
-class NotifyAction extends BaseApiAwareAction
+class SyncOrderAction extends BaseApiAwareAction
 {
     /**
      * {@inheritDoc}
      *
-     * @param Notify $request
+     * @param SyncOrder $request
      */
     public function execute($request)
     {
@@ -24,8 +22,9 @@ class NotifyAction extends BaseApiAwareAction
 
         $model->validateNotEmpty(['order']);
 
-        $this->gateway->execute($status = new GetOrderHumanStatus($model));
-        $model['status'] = $status->getValue();
+        $model['order'] = ResourceSerializer::serializeResource(
+            $this->api->getPayment($model['order']['id'])
+        );
     }
 
     /**
@@ -34,7 +33,7 @@ class NotifyAction extends BaseApiAwareAction
     public function supports($request)
     {
         return
-            $request instanceof Notify &&
+            $request instanceof SyncOrder &&
             $request->getModel() instanceof \ArrayAccess
             ;
     }

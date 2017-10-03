@@ -7,7 +7,7 @@ use Payum\Slimpay\Action\ConvertPaymentAction;
 use Payum\Slimpay\Action\CaptureAction;
 use Payum\Slimpay\Action\NotifyAction;
 use Payum\Slimpay\Action\RefundAction;
-use Payum\Slimpay\Action\StatusAction;
+use Payum\Slimpay\Action\PaymentStatusAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
 
@@ -25,7 +25,7 @@ class SlimpayGatewayFactory extends GatewayFactory
             'payum.action.authorize' => new AuthorizeAction(),
             'payum.action.cancel' => new CancelAction(),
             'payum.action.notify' => new NotifyAction(),
-            'payum.action.status' => new StatusAction(),
+            'payum.action.status' => new PaymentStatusAction(),
         ]);
 
         if (false == $config['payum.api']) {

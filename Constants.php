@@ -18,9 +18,18 @@ class Constants
     const PAYMENT_STATUS_PROCESSED = 'processed';
     const PAYMENT_STATUS_REJECTED = 'rejected';
 
+    const ORDER_STATE_CLOSED = 'closed';
     const ORDER_STATE_ABORT = 'closed.aborted';
+    const ORDER_STATE_ABORT_BY_SERVER = 'closed.aborted.aborted_byserver';
+    const ORDER_STATE_ABORT_BY_CLIENT = 'closed.aborted.aborted_byclient';
     const ORDER_STATE_COMPLETE = 'closed.completed';
     const ORDER_STATE_RUNNING = 'open.running';
+    const ORDER_STATE_NOT_RUNNING = 'open.not_running';
+    const ORDER_STATE_NOT_RUNNING_SUSPENDED = 'open.not_running.suspended';
+    const ORDER_STATE_NOT_RUNNING_SUSPENDED_AVAITING_INPUT = 'open.not_running.suspended.awaiting_input';
+    const ORDER_STATE_NOT_RUNNING_SUSPENDED_AVAITING_VALIDATION = 'open.not_running.suspended.awaiting_validation';
+    const ORDER_STATE_NOT_RUNNING_NOT_STARTED = 'open.not_running.not_started';
+
 
     const BASE_URI_SANDBOX = 'https://api.preprod.slimpay.com';
     const BASE_URI_PROD = 'https://api.slimpay.net';
@@ -34,6 +43,7 @@ class Constants
     const FOLLOW_GET_MANDATE = 'get-mandates';
     const FOLLOW_UPDATE_BANK_ACCOUNT = 'update-bank-account';
     const FOLLOW_SEARCH_PAYMENT_BY_ID = 'search-payment-by-id';
+    const FOLLOW_SEARCH_ORDER_BY_ID = 'search-order-by-id';
 
     const ITEM_TYPE_SIGN_MANDATE = 'signMandate';
     const ITEM_TYPE_MANDATE = 'mandate';
