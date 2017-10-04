@@ -80,9 +80,7 @@ class SlimpayGatewayFactory extends GatewayFactory
                     'creditor_reference' => $config['creditor_reference'],
                     'return_url' => $config['return_url'],
                     'notify_url' => $config['notify_url'],
-                    'base_uri' => $config['sandbox'] ?
-                        Constants::BASE_URI_SANDBOX :
-                        Constants::BASE_URI_PROD
+                    'sandbox' => $config['sandbox']
                     ];
 
                 return new Api($slimpayConfig, $config['payum.http_client'], $config['httplug.message_factory']);
