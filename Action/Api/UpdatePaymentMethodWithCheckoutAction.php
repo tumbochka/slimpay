@@ -10,7 +10,7 @@ use Payum\Slimpay\Request\Api\CheckoutIframe;
 use Payum\Slimpay\Request\Api\CheckoutRedirect;
 use Payum\Slimpay\Request\Api\UpdatePaymentMethodWithCheckout;
 
-class UpdatePaymentMethodActionWithCheckout extends BaseApiAwareAction
+class UpdatePaymentMethodWithCheckoutAction extends BaseApiAwareAction
 {
     /**
      * {@inheritDoc}
