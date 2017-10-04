@@ -74,19 +74,18 @@ class SlimpayGatewayFactory extends GatewayFactory
             $config['payum.api'] = function (ArrayObject $config) {
                 $config->validateNotEmpty($config['payum.required_options']);
 
-                $slimpayConfig = new Config();
+                $slimpayConfig = [
+                    'app_id' => $config['app_id'],
+                    'app_secret' => $config['app_secret'],
+                    'creditor_reference' => $config['creditor_reference'],
+                    'return_url' => $config['return_url'],
+                    'notify_url' => $config['notify_url'],
+                    'base_uri' => $config['sandbox'] ?
+                        Constants::BASE_URI_SANDBOX :
+                        Constants::BASE_URI_PROD
+                    ];
 
-                $slimpayConfig->appId = $config['app_id'];
-                $slimpayConfig->appSecret = $config['app_secret'];
-                $slimpayConfig->creditorReference = $config['creditor_reference'];
-                $slimpayConfig->returnUrl = $config['return_url'];
-                $slimpayConfig->notifyUrl = $config['notify_url'];
-                $slimpayConfig->baseUri = $config['sandbox'] ?
-                    Constants::BASE_URI_SANDBOX :
-                    Constants::BASE_URI_PROD
-                ;
-
-                return $slimpayConfig;
+                return new Api($slimpayConfig, $config['payum.http_client'], $config['httplug.message_factory']);
             };
         }
     }
