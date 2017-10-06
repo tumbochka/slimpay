@@ -2,6 +2,7 @@
 
 namespace Payum\Slimpay\Util;
 
+use HapiClient\Hal\Link;
 use HapiClient\Hal\Resource;
 
 class ResourceSerializer
@@ -15,15 +16,34 @@ class ResourceSerializer
     {
         $state = $resource->getState();
         $links = $resource->getAllLinks();
+        $linkArrays = [];
+        foreach ($links as $key => $link)
+        {
+            $linkArrays[$key] = self::linkToArray($link);
+        }
         $embeddedResources = $resource->getAllEmbeddedResources();
 
         $state = array_merge($state, [
-            '_links' => $links,
+            '_links' => $linkArrays,
             '_embedded' => $embeddedResources,
 
         ]);
 
         return json_encode($state);
+    }
+
+    private static function linkToArray(Link $link)
+    {
+        return [
+            'href' => $link->getHref(),
+            'templated'=> $link->isTemplated(),
+            'type'=> $link->getType(),
+            'deprecation'=> $link->getDeprecation(),
+            'name'=> $link->getName(),
+            'profile'=> $link->getProfile(),
+            'title'=> $link->getTitle(),
+            'hreflang'=> $link->getHreflang(),
+        ];
     }
 
     /**
