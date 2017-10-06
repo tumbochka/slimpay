@@ -47,7 +47,7 @@ class Api
         $this->hapiClient = new HapiClient(
             $this->getApiEndpoint(),
             '/',
-            $this->getApiEndpoint() . '/alps/v1',
+            'https://api.slimpay.net/alps/v1',
             new Oauth2BasicAuthentication(
                 '/oauth/token',
                 $options['app_id'],
