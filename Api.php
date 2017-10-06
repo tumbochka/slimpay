@@ -296,7 +296,7 @@ class Api
      */
     protected function getRelationsNamespace()
     {
-        return Constants::PROFILE_URI . '/alps#';
+        return Constants::RELATION_URI . '/alps#';
     }
 
     /**

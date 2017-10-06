@@ -42,6 +42,12 @@ class SignMandateAction extends BaseApiAwareAction
             'country'
         ]);
 
+        if(null === $model['checkout_mode']) {
+            $model['checkout_mode'] = $this->api->getDefaultCheckoutMode();
+        }
+
+        $model->validateNotEmpty(['checkout_mode']);
+
         $model['order'] = ResourceSerializer::serializeResource(
             $this->api->signMandate($model['subscriber_reference'], $model['payment_schema'], [
                 'givenName' => $model['first_name'],

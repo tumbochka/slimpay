@@ -34,6 +34,8 @@ class UpdatePaymentMethodWithCheckoutAction extends BaseApiAwareAction
             $model['checkout_mode'] = $this->api->getDefaultCheckoutMode();
         }
 
+        $model->validateNotEmpty(['checkout_mode']);
+
         if(Constants::CHECKOUT_MODE_REDIRECT == $model['checkout_mode']) {
             $this->gateway->execute(new CheckoutRedirect($model));
         } elseif (in_array(

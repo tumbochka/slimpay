@@ -67,6 +67,7 @@ class SlimpayGatewayFactory extends GatewayFactory
                 'return_url' => '',
                 'notify_url' => '',
                 'sandbox' => true,
+                'default_checkout_mode' => null
             ];
             $config->defaults($config['payum.default_options']);
             $config['payum.required_options'] = [];
@@ -80,7 +81,8 @@ class SlimpayGatewayFactory extends GatewayFactory
                     'creditor_reference' => $config['creditor_reference'],
                     'return_url' => $config['return_url'],
                     'notify_url' => $config['notify_url'],
-                    'sandbox' => $config['sandbox']
+                    'sandbox' => $config['sandbox'],
+                    'checkout_mode' => $config['checkout_mode']
                     ];
 
                 return new Api($slimpayConfig, $config['payum.http_client'], $config['httplug.message_factory']);
