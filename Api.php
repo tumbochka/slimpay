@@ -255,8 +255,9 @@ class Api
         $resource = $this->doRequest(
             'GET',
             Constants::FOLLOW_EXTENDED_USER_APPROVAL,
-            ['mode' => $iframeMode],
-            $order
+            null,
+            $order,
+            ['mode' => $iframeMode]
         );
 
         $html = $resource->getState()['content'];
@@ -279,18 +280,23 @@ class Api
      * @param string $follow
      * @param array|null $fields
      * @param Resource|null $resource
+     * @param array|null $urlVariables
      *
      * @return Resource
      */
-    protected function doRequest($method, $follow, array $fields = null, Resource $resource = null)
-    {
+    protected function doRequest(
+        $method,
+        $follow,
+        array $fields = null,
+        Resource $resource = null,
+        array $urlVariables = null
+    ) {
         $rel = new CustomRel($this->getRelationsNamespace() . $follow);
 
-        $follow = new Follow($rel, $method, null, $fields ? new JsonBody($fields) : null);
+        $follow = new Follow($rel, $method, $urlVariables, $fields ? new JsonBody($fields) : null);
 
         return $this->hapiClient->sendFollow($follow, $resource);
     }
-
     /**
      * @return string
      */
