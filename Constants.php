@@ -33,6 +33,7 @@ class Constants
 
     const BASE_URI_SANDBOX = 'https://api.preprod.slimpay.com';
     const BASE_URI_PROD = 'https://api.slimpay.net';
+    const PROFILE_URI = 'https://api.slimpay.net';
 
     const FOLLOW_CREATE_ORDERS = 'create-orders';
     const FOLLOW_CREATE_PAYINS = 'create-payins';

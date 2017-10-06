@@ -47,7 +47,7 @@ class Api
         $this->hapiClient = new HapiClient(
             $this->getApiEndpoint(),
             '/',
-            'https://api.slimpay.net/alps/v1',
+            Constants::PROFILE_URI . '/alps/v1',
             new Oauth2BasicAuthentication(
                 '/oauth/token',
                 $options['app_id'],
@@ -296,7 +296,7 @@ class Api
      */
     protected function getRelationsNamespace()
     {
-        return $this->getApiEndpoint() . '/alps#';
+        return Constants::PROFILE_URI . '/alps#';
     }
 
     /**
