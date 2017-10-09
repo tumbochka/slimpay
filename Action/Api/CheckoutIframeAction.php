@@ -46,7 +46,8 @@ class CheckoutIframeAction extends BaseApiAwareAction
 
         $replay = new SlimpayHttpResponse($renderTemplate->getResult());
         $replay->setOrder($order);
-        $replay->setView($renderTemplate->getResult());
+        $replay->setModel($model['authorize_template']);
+        $replay->setSnippet($iframe);
 
         throw $replay;
     }
