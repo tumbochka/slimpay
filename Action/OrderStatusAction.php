@@ -5,12 +5,13 @@ namespace Payum\Slimpay\Action;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Slimpay\Constants;
 use Payum\Slimpay\Request\Api\GetOrderHumanStatus;
 use Payum\Slimpay\Request\Api\SyncOrder;
 
-class OrderStatusAction implements ActionInterface
+class OrderStatusAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 

@@ -4,11 +4,12 @@ namespace Payum\Slimpay\Action;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Refund;
 use Payum\Slimpay\Request\Api\Refund as ApiRefund;
 
-class RefundAction implements ActionInterface
+class RefundAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 

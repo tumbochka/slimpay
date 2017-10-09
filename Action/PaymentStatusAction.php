@@ -2,6 +2,7 @@
 namespace Payum\Slimpay\Action;
 
 use Payum\Core\Action\ActionInterface;
+use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -9,7 +10,7 @@ use Payum\Slimpay\Constants;
 use Payum\Slimpay\Request\Api\GetPaymentHumanStatus;
 use Payum\Slimpay\Request\Api\SyncPayment;
 
-class PaymentStatusAction implements ActionInterface
+class PaymentStatusAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
