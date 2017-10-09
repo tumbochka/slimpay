@@ -15,7 +15,12 @@ class SlimpayHttpResponse extends HttpResponse
     /**
      * @var string
      */
-    private $view;
+    private $model;
+
+    /**
+     * @var string
+     */
+    private $snippet;
 
     /**
      * @return Resource
@@ -36,16 +41,32 @@ class SlimpayHttpResponse extends HttpResponse
     /**
      * @return string
      */
-    public function getView()
+    public function getModel()
     {
-        return $this->view;
+        return $this->model;
     }
 
     /**
-     * @param string $view
+     * @param string $model
      */
-    public function setView($view)
+    public function setModel($model)
     {
-        $this->view = $view;
+        $this->model = $model;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSnippet()
+    {
+        return $this->snippet;
+    }
+
+    /**
+     * @param string $snippet
+     */
+    public function setSnippet($snippet)
+    {
+        $this->snippet = $snippet;
     }
 }
