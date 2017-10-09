@@ -9,6 +9,7 @@ use Payum\Slimpay\Constants;
 use Payum\Slimpay\Request\Api\CheckoutIframe;
 use Payum\Slimpay\Request\Api\CheckoutRedirect;
 use Payum\Slimpay\Request\Api\UpdatePaymentMethodWithCheckout;
+use Payum\Slimpay\Util\ResourceSerializer;
 
 class UpdatePaymentMethodWithCheckoutAction extends BaseApiAwareAction
 {
@@ -25,10 +26,10 @@ class UpdatePaymentMethodWithCheckoutAction extends BaseApiAwareAction
 
         $model->validateNotEmpty(['subscriber_reference', 'mandate_reference']);
 
-        $model['order'] = $this->api->updatePaymentMethodWithCheckout(
+        $model['order'] = ResourceSerializer::serializeResource($this->api->updatePaymentMethodWithCheckout(
             $model['subscriber_reference'],
             $model['mandate_reference']
-        );
+        ));
 
         if(null === $model['checkout_mode']) {
             $model['checkout_mode'] = $this->api->getDefaultCheckoutMode();
