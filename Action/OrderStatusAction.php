@@ -10,6 +10,7 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Slimpay\Constants;
 use Payum\Slimpay\Request\Api\GetOrderHumanStatus;
 use Payum\Slimpay\Request\Api\SyncOrder;
+use Payum\Slimpay\Util\ResourceSerializer;
 
 class OrderStatusAction implements ActionInterface, GatewayAwareInterface
 {
@@ -28,7 +29,8 @@ class OrderStatusAction implements ActionInterface, GatewayAwareInterface
 
         if($model['order']) {
             $this->gateway->execute(new SyncOrder($model));
-            switch ($model['order']['state']) {
+            $order = ResourceSerializer::unserializeResource($model['order']);
+            switch ($order->getState()['state']) {
                 case Constants::ORDER_STATE_ABORT:
                 case Constants::ORDER_STATE_ABORT_BY_CLIENT:
                     $request->markCanceled();
