@@ -64,7 +64,7 @@ class OrderStatusAction implements ActionInterface
     public function supports($request)
     {
         return
-            $request instanceof GetPaymentHumanStatus &&
+            $request instanceof GetOrderHumanStatus &&
             $request->getModel() instanceof \ArrayAccess
             ;
     }
