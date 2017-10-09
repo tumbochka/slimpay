@@ -23,7 +23,7 @@ class SyncOrderAction extends BaseApiAwareAction
         $model->validateNotEmpty(['order']);
 
         $model['order'] = ResourceSerializer::serializeResource(
-            $this->api->getOrder($model['order']->getState()['id'])
+            $this->api->getOrder($model['order']['id'])
         );
     }
 
