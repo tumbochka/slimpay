@@ -23,7 +23,7 @@ class SyncPaymentAction extends BaseApiAwareAction
         $model->validateNotEmpty(['payment']);
 
         $model['payment'] = ResourceSerializer::serializeResource(
-            $this->api->getPayment($model['payment']['id'])
+            $this->api->getPayment($model['payment']->getState()['id'])
         );
     }
 
