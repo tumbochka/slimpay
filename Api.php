@@ -213,7 +213,13 @@ class Api
      */
     public function getPayment($paymentId)
     {
-        return $this->doRequest('GET', Constants::FOLLOW_SEARCH_PAYMENT_BY_ID, ['id' => $paymentId]);
+        return $this->doRequest(
+            'GET',
+            Constants::FOLLOW_SEARCH_PAYMENT_BY_ID,
+            null,
+            null,
+            ['id' => $paymentId]
+        );
     }
 
     /**
@@ -223,7 +229,13 @@ class Api
      */
     public function getOrder($orderId)
     {
-        return $this->doRequest('GET', Constants::FOLLOW_SEARCH_ORDER_BY_ID, ['id' => $orderId]);
+        return $this->doRequest(
+            'GET',
+            Constants::FOLLOW_SEARCH_ORDER_BY_ID,
+            null,
+            null,
+            ['id' => $orderId]
+        );
     }
 
     /**
