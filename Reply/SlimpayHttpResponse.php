@@ -13,6 +13,11 @@ class SlimpayHttpResponse extends HttpResponse
     private $order;
 
     /**
+     * @var string
+     */
+    private $view;
+
+    /**
      * @return Resource
      */
     public function getOrder()
@@ -26,5 +31,21 @@ class SlimpayHttpResponse extends HttpResponse
     public function setOrder($order)
     {
         $this->order = $order;
+    }
+
+    /**
+     * @return string
+     */
+    public function getView()
+    {
+        return $this->view;
+    }
+
+    /**
+     * @param string $view
+     */
+    public function setView($view)
+    {
+        $this->view = $view;
     }
 }
