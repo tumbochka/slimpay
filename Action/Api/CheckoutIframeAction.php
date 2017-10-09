@@ -44,7 +44,10 @@ class CheckoutIframeAction extends BaseApiAwareAction
         ));
         $this->gateway->execute($renderTemplate);
 
-        throw new SlimpayHttpResponse($renderTemplate->getResult());
+        $replay = new SlimpayHttpResponse($renderTemplate->getResult());
+        $replay->setOrder($order);
+
+        throw $replay;
     }
     /**
      * {@inheritDoc}
