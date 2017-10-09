@@ -6,9 +6,9 @@ use HapiClient\Hal\Resource;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\RenderTemplate;
 use Payum\Slimpay\Constants;
+use Payum\Slimpay\Reply\SlimpayHttpResponse;
 use Payum\Slimpay\Request\Api\CheckoutIframe;
 use Payum\Slimpay\Util\ResourceSerializer;
 
@@ -44,7 +44,7 @@ class CheckoutIframeAction extends BaseApiAwareAction
         ));
         $this->gateway->execute($renderTemplate);
 
-        throw new HttpResponse($renderTemplate->getResult());
+        throw new SlimpayHttpResponse($renderTemplate->getResult());
     }
     /**
      * {@inheritDoc}
