@@ -9,6 +9,7 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Slimpay\Constants;
 use Payum\Slimpay\Request\Api\GetPaymentHumanStatus;
 use Payum\Slimpay\Request\Api\SyncPayment;
+use Payum\Slimpay\Util\ResourceSerializer;
 
 class PaymentStatusAction implements ActionInterface, GatewayAwareInterface
 {
@@ -27,7 +28,8 @@ class PaymentStatusAction implements ActionInterface, GatewayAwareInterface
 
         if($model['payment']) {
             $this->gateway->execute(new SyncPayment($model));
-            switch ($model['payment']['executionStatus']) {
+            $payment = ResourceSerializer::unserializeResource($model['payment']);
+            switch ($payment->getState()['executionStatus']) {
                 case Constants::PAYMENT_STATUS_PROCESSING:
                     $request->markPending();
                     break;
