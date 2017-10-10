@@ -3,6 +3,7 @@ namespace Payum\Slimpay;
 
 use Payum\Slimpay\Action\Api\CheckoutIframeAction;
 use Payum\Slimpay\Action\Api\CheckoutRedirectAction;
+use Payum\Slimpay\Action\Api\GetOrderMandateAction;
 use Payum\Slimpay\Action\Api\PaymentAction;
 use Payum\Slimpay\Action\Api\SetUpCardAliasAction;
 use Payum\Slimpay\Action\Api\SignMandateAction;
@@ -52,6 +53,7 @@ class SlimpayGatewayFactory extends GatewayFactory
             'payum.action.api.payment' => new PaymentAction(),
             'payum.action.api.refund' => new ApiRefundAction(),
             'payum.action.api.set_up_card_alias' => new SetUpCardAliasAction(),
+            'payum.action.api.get_order_mandate' => new GetOrderMandateAction(),
             'payum.action.api.sign_mandate' => new SignMandateAction(),
             'payum.action.api.sync_order' => new SyncOrderAction(),
             'payum.action.api.sync_payment' => new SyncPaymentAction(),
