@@ -40,11 +40,11 @@ class AuthorizeAction implements ActionInterface, GatewayAwareInterface
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        $model->validateNotEmpty(['payment_schema']);
+        $model->validateNotEmpty(['payment_scheme']);
 
         $model['authorize_template'] = $this->templateName;
 
-        if(Constants::PAYMENT_SCHEMA_CARD == $model['payment_schema']) {
+        if(Constants::PAYMENT_SCHEME_CARD == $model['payment_scheme']) {
             $this->gateway->execute(new SetUpCardAlias($model));
         } else {
             $this->gateway->execute(new SignMandate($model));

@@ -23,21 +23,21 @@ class RefundAction extends BaseApiAwareAction
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        $model->validateNotEmpty(['amount', 'currency', 'payment_schema', 'mandate_reference']);
+        $model->validateNotEmpty(['amount', 'currency', 'payment_scheme', 'mandate_reference']);
 
-        if (Constants::PAYMENT_SCHEMA_SEPA_CREDIT_TRANSFER != $model['payment_schema']) {
+        if (Constants::PAYMENT_SCHEME_SEPA_CREDIT_TRANSFER != $model['payment_scheme']) {
             throw new LogicException(sprintf(
                 'Only %s payment scheme is supported',
-                Constants::PAYMENT_SCHEMA_SEPA_CREDIT_TRANSFER
+                Constants::PAYMENT_SCHEME_SEPA_CREDIT_TRANSFER
             ));
         }
 
         $model['payment'] = ResourceSerializer::serializeResource(
-            $this->api->refundPayment($model['payment_schema'], $model['mandate_reference'], [
+            $this->api->refundPayment($model['payment_scheme'], $model['mandate_reference'], [
                 'reference' => $model['reference'],
                 'amount' => $model['amount'],
                 'currency' => $model['currency'],
-                'scheme' => $model['payment_schema'],
+                'scheme' => $model['payment_scheme'],
                 'label' => $model['label'],
                 'executionDate' => $model['execution_date']
             ])

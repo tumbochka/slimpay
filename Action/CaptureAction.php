@@ -24,7 +24,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        $model->validateNotEmpty(['amount', 'currency', 'payment_schema', 'payment_reference']);
+        $model->validateNotEmpty(['amount', 'currency', 'payment_scheme', 'payment_reference']);
 
         $this->gateway->execute(new Payment($model));
     }

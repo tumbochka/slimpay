@@ -21,14 +21,14 @@ class PaymentAction  extends BaseApiAwareAction
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        $model->validateNotEmpty(['amount', 'currency', 'payment_schema', 'payment_reference']);
+        $model->validateNotEmpty(['amount', 'currency', 'payment_scheme', 'payment_reference']);
 
         $model['payment'] = ResourceSerializer::serializeResource(
-            $this->api->createPayment($model['payment_schema'], $model['mandate_reference'], [
+            $this->api->createPayment($model['payment_scheme'], $model['mandate_reference'], [
                 'reference' => $model['reference'],
                 'amount' => $model['amount'],
                 'currency' =>  $model['currency'],
-                'scheme' => $model['payment_schema'],
+                'scheme' => $model['payment_scheme'],
                 'label' => $model['label'],
                 'executionDate' => $model['execution_date']
             ])

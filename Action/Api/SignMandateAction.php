@@ -24,12 +24,12 @@ class SignMandateAction extends BaseApiAwareAction
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        if (!in_array($model['payment_schema'], Constants::getSupportedPaymentShemas())) {
+        if (!in_array($model['payment_scheme'], Constants::getSupportedPaymentShemas())) {
             throw new LogicException('Payment Schema not set or not supported');
         }
 
-        if (Constants::PAYMENT_SCHEMA_CARD == $model['payment_schema']) {
-            throw new LogicException('Mandate signing is not available for Card schema');
+        if (Constants::PAYMENT_SCHEME_CARD == $model['payment_scheme']) {
+            throw new LogicException('Mandate signing is not available for Card scheme');
         }
 
         $model->validateNotEmpty([
@@ -49,7 +49,7 @@ class SignMandateAction extends BaseApiAwareAction
         $model->validateNotEmpty(['checkout_mode']);
 
         $model['order'] = ResourceSerializer::serializeResource(
-            $this->api->signMandate($model['subscriber_reference'], $model['payment_schema'], [
+            $this->api->signMandate($model['subscriber_reference'], $model['payment_scheme'], [
                 'givenName' => $model['first_name'],
                 'familyName' => $model['last_name'],
                 'email' => $model['email'],

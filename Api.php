@@ -149,7 +149,7 @@ class Api
         $fields = [
             'started' => true,
             'locale' => null,
-            'paymentScheme' => Constants::PAYMENT_SCHEMA_CARD,
+            'paymentScheme' => Constants::PAYMENT_SCHEME_CARD,
             'creditor' => [
                 'reference' => $this->options['creditor_reference']
             ],
@@ -176,7 +176,7 @@ class Api
     {
         $fields['creditor'] = ['reference' => $this->options['creditor_reference']];
 
-        if (Constants::PAYMENT_SCHEMA_CARD == $paymentSchema) {
+        if (Constants::PAYMENT_SCHEME_CARD == $paymentSchema) {
             $fields[Constants::ITEM_TYPE_CARD_ALIAS] = [
                 'reference' => $paymentReference
             ];

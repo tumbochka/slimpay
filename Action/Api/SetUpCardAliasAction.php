@@ -25,12 +25,12 @@ class SetUpCardAliasAction extends BaseApiAwareAction
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        if (!in_array($model['payment_schema'], Constants::getSupportedPaymentShemas())) {
+        if (!in_array($model['payment_scheme'], Constants::getSupportedPaymentShemas())) {
             throw new LogicException('Payment Schema not set or not supported');
         }
 
-        if (Constants::PAYMENT_SCHEMA_CARD != $model['payment_schema']) {
-            throw new LogicException('Setting up card alias is available for Card schema only');
+        if (Constants::PAYMENT_SCHEME_CARD != $model['payment_scheme']) {
+            throw new LogicException('Setting up card alias is available for Card scheme only');
         }
 
         $model->validateNotEmpty(['subscriber_reference']);

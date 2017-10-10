@@ -31,7 +31,7 @@ class GetOrderPaymentReferenceAction  extends BaseApiAwareAction
             throw new LogicException('Cannot get payment reference for not completed orders.');
         }
 
-        if (Constants::PAYMENT_SCHEMA_CARD == $order->getState()['paymentScheme']) {
+        if (Constants::PAYMENT_SCHEME_CARD == $order->getState()['paymentScheme']) {
             $follow = Constants::FOLLOW_GET_CARD_ALIAS;
         } else {
             $follow = Constants::FOLLOW_GET_MANDATE;
