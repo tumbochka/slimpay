@@ -243,9 +243,9 @@ class Api
      *
      * @return Resource
      */
-    public function getOrderMandate(Resource $order)
+    public function getOrderPaymentReference(Resource $order, $follow)
     {
-        return $this->doRequest('GET', Constants::FOLLOW_GET_MANDATE, null, $order);
+        return $this->doRequest('GET', $follow, null, $order);
     }
 
     /**

@@ -43,6 +43,7 @@ class Constants
     const FOLLOW_EXTENDED_USER_APPROVAL = 'extended-user-approval';
     const FOLLOW_GET_MANDATES = 'get-mandates';
     const FOLLOW_GET_MANDATE = 'get-mandates';
+    const FOLLOW_GET_CARD_ALIAS = 'get-card-alias';
     const FOLLOW_UPDATE_BANK_ACCOUNT = 'update-bank-account';
     const FOLLOW_SEARCH_PAYMENT_BY_ID = 'search-payment-by-id';
     const FOLLOW_SEARCH_ORDER_BY_ID = 'search-order-by-id';
