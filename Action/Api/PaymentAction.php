@@ -24,7 +24,7 @@ class PaymentAction  extends BaseApiAwareAction
         $model->validateNotEmpty(['amount', 'currency', 'payment_scheme', 'payment_reference']);
 
         $model['payment'] = ResourceSerializer::serializeResource(
-            $this->api->createPayment($model['payment_scheme'], $model['mandate_reference'], [
+            $this->api->createPayment($model['payment_scheme'], $model['payment_reference'], [
                 'reference' => $model['reference'],
                 'amount' => $model['amount'],
                 'currency' =>  $model['currency'],
