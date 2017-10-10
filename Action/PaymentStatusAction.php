@@ -31,6 +31,7 @@ class PaymentStatusAction implements ActionInterface, GatewayAwareInterface
             $payment = ResourceSerializer::unserializeResource($model['payment']);
             switch ($payment->getState()['executionStatus']) {
                 case Constants::PAYMENT_STATUS_PROCESSING:
+                case Constants::PAYMENT_STATUS_TO_PROCESS:
                     $request->markPending();
                     break;
                 case Constants::PAYMENT_STATUS_PROCESSED:
