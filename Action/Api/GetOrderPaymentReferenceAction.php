@@ -3,6 +3,7 @@
 namespace Payum\Slimpay\Action\Api;
 
 
+use HapiClient\Exception\HttpException;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -37,9 +38,13 @@ class GetOrderPaymentReferenceAction  extends BaseApiAwareAction
             $follow = Constants::FOLLOW_GET_MANDATE;
         }
 
-        $model['reference'] = ResourceSerializer::serializeResource(
-            $this->api->getOrderPaymentReference($order, $follow)
-        );
+        try {
+            $model['reference'] = ResourceSerializer::serializeResource(
+                $this->api->getOrderPaymentReference($order, $follow)
+            );
+        } catch (HttpException $e) {
+            $this->populateDetailsWithError($model, $e, $request);
+        }
     }
 
     /**

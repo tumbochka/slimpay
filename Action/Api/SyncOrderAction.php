@@ -2,6 +2,7 @@
 
 namespace Payum\Slimpay\Action\Api;
 
+use HapiClient\Exception\HttpException;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Slimpay\Request\Api\SyncOrder;
@@ -24,9 +25,13 @@ class SyncOrderAction extends BaseApiAwareAction
 
         $order = ResourceSerializer::unserializeResource($model['order']);
 
-        $model['order'] = ResourceSerializer::serializeResource(
-            $this->api->getOrder($order->getState()['id'])
-        );
+        try {
+            $model['order'] = ResourceSerializer::serializeResource(
+                $this->api->getOrder($order->getState()['id'])
+            );
+        } catch (HttpException $e) {
+            $this->populateDetailsWithError($model, $e, $request);
+        }
     }
 
     /**

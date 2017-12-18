@@ -2,6 +2,7 @@
 
 namespace Payum\Slimpay\Action\Api;
 
+use HapiClient\Exception\HttpException;
 use HapiClient\Hal\Resource;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\LogicException;
@@ -28,11 +29,16 @@ class CheckoutRedirectAction extends BaseApiAwareAction
         if (! $order instanceof Resource) {
             throw new LogicException('Order should be an instance of Resource');
         }
+
         if (Constants::CHECKOUT_MODE_REDIRECT != $model['checkout_mode']) {
             throw new LogicException(sprintf('Redirect is not available for mode %s', $model['checkout_mode']));
         }
 
-        throw new HttpRedirect($this->api->getCheckoutRedirect($order));
+        try {
+            throw new HttpRedirect($this->api->getCheckoutRedirect($order));
+        } catch (HttpException $e) {
+            $this->populateDetailsWithError($model, $e, $request);
+        }
     }
 
     /**
