@@ -2,6 +2,7 @@
 
 namespace Payum\Slimpay\Action\Api;
 
+use HapiClient\Exception\HttpException;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -42,37 +43,41 @@ class SignMandateAction extends BaseApiAwareAction
             'country'
         ]);
 
-        if(null === $model['checkout_mode']) {
-            $model['checkout_mode'] = $this->api->getDefaultCheckoutMode();
-        }
+        try {
+            if(null === $model['checkout_mode']) {
+                $model['checkout_mode'] = $this->api->getDefaultCheckoutMode();
+            }
 
-        $model->validateNotEmpty(['checkout_mode']);
+            $model->validateNotEmpty(['checkout_mode']);
 
-        $model['order'] = ResourceSerializer::serializeResource(
-            $this->api->signMandate($model['subscriber_reference'], $model['payment_scheme'], [
-                'givenName' => $model['first_name'],
-                'familyName' => $model['last_name'],
-                'email' => $model['email'],
-                'telephone' => $model['phone'],
-                'companyName' => $model['company'],
-                'organizationName' => $model['organization'],
-                'billingAddress' => [
-                    'street1' => $model['address1'],
-                    'street2' => $model['address2'],
-                    'city' => $model['city'],
-                    'postalCode' => $model['zip'],
-                    'country' => $model['country']
-                ]
-            ])
-        );
+            $model['order'] = ResourceSerializer::serializeResource(
+                $this->api->signMandate($model['subscriber_reference'], $model['payment_scheme'], [
+                    'givenName' => $model['first_name'],
+                    'familyName' => $model['last_name'],
+                    'email' => $model['email'],
+                    'telephone' => $model['phone'],
+                    'companyName' => $model['company'],
+                    'organizationName' => $model['organization'],
+                    'billingAddress' => [
+                        'street1' => $model['address1'],
+                        'street2' => $model['address2'],
+                        'city' => $model['city'],
+                        'postalCode' => $model['zip'],
+                        'country' => $model['country']
+                    ]
+                ])
+            );
 
-        if(Constants::CHECKOUT_MODE_REDIRECT == $model['checkout_mode']) {
-            $this->gateway->execute(new CheckoutRedirect($model));
-        } elseif (in_array(
-            $model['checkout_mode'],
-            [Constants::CHECKOUT_MODE_IFRAME_EMBADDED, Constants::CHECKOUT_MODE_IFRAME_POPIN]
-        )) {
-            $this->gateway->execute(new CheckoutIframe($model));
+            if(Constants::CHECKOUT_MODE_REDIRECT == $model['checkout_mode']) {
+                $this->gateway->execute(new CheckoutRedirect($model));
+            } elseif (in_array(
+                $model['checkout_mode'],
+                [Constants::CHECKOUT_MODE_IFRAME_EMBADDED, Constants::CHECKOUT_MODE_IFRAME_POPIN]
+            )) {
+                $this->gateway->execute(new CheckoutIframe($model));
+            }
+        } catch (HttpException $e) {
+            $this->populateDetailsWithError($model, $e, $request);
         }
     }
 

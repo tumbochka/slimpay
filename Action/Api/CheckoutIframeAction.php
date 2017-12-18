@@ -2,6 +2,7 @@
 
 namespace Payum\Slimpay\Action\Api;
 
+use HapiClient\Exception\HttpException;
 use HapiClient\Hal\Resource;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\LogicException;
@@ -37,19 +38,23 @@ class CheckoutIframeAction extends BaseApiAwareAction
             throw new LogicException(sprintf('Iframe is not available for mode %s', $model['checkout_mode']));
         }
 
-        $iframe = $this->api->getCheckoutIframe($order, $model['checkout_mode']);
+        try {
+            $iframe = $this->api->getCheckoutIframe($order, $model['checkout_mode']);
 
-        $renderTemplate = new RenderTemplate($model['authorize_template'], array(
-            'snippet' => $iframe,
-        ));
-        $this->gateway->execute($renderTemplate);
+            $renderTemplate = new RenderTemplate($model['authorize_template'], array(
+                'snippet' => $iframe,
+            ));
+            $this->gateway->execute($renderTemplate);
 
-        $replay = new SlimpayHttpResponse($renderTemplate->getResult());
-        $replay->setOrder($order);
-        $replay->setModel($model['authorize_template']);
-        $replay->setSnippet($iframe);
+            $replay = new SlimpayHttpResponse($renderTemplate->getResult());
+            $replay->setOrder($order);
+            $replay->setModel($model['authorize_template']);
+            $replay->setSnippet($iframe);
 
-        throw $replay;
+            throw $replay;
+        } catch (HttpException $e) {
+            $this->populateDetailsWithError($model, $e, $request);
+        }
     }
     /**
      * {@inheritDoc}

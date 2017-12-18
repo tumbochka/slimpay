@@ -2,6 +2,7 @@
 
 namespace Payum\Slimpay\Action\Api;
 
+use HapiClient\Exception\HttpException;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Slimpay\Request\Api\SyncPayment;
@@ -24,9 +25,13 @@ class SyncPaymentAction extends BaseApiAwareAction
 
         $payment = ResourceSerializer::unserializeResource($model['payment']);
 
-        $model['payment'] = ResourceSerializer::serializeResource(
-            $this->api->getPayment($payment->getState()['id'])
-        );
+        try {
+            $model['payment'] = ResourceSerializer::serializeResource(
+                $this->api->getPayment($payment->getState()['id'])
+            );
+        } catch (HttpException $e) {
+            $this->populateDetailsWithError($model, $e, $request);
+        }
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Payum\Slimpay\Action\Api;
 
+use HapiClient\Exception\HttpException;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Slimpay\Request\Api\UpdatePaymentMethodWithIban;
@@ -22,9 +23,13 @@ class UpdatePaymentMethodWithIbanAction extends BaseApiAwareAction
 
         $model->validateNotEmpty(['iban', 'mandate_reference']);
 
-        $model['bank_account'] = ResourceSerializer::serializeResource(
-            $this->api->updatePaymentMethodWithIban($model['mandate_reference'], $model['iban'])
-        );
+        try {
+            $model['bank_account'] = ResourceSerializer::serializeResource(
+                $this->api->updatePaymentMethodWithIban($model['mandate_reference'], $model['iban'])
+            );
+        } catch (HttpException $e) {
+            $this->populateDetailsWithError($model, $e, $request);
+        }
     }
 
     /**
